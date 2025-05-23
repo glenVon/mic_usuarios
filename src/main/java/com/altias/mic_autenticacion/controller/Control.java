@@ -33,12 +33,12 @@ public class Control {
 
     // Método para autenticar un usuario
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user) {
         User authenticatedUser = userRepository.findByNombreUsuarioAndPassword(user.getNombreUsuario(), user.getPassword());
         if (authenticatedUser != null) {
             return ResponseEntity.ok(authenticatedUser);
         } else {
-            return ResponseEntity.status(401).build(); // Unauthorized
+            return ResponseEntity.status(401).body("No autorizado"); // Unauthorized
         }
     }
     
