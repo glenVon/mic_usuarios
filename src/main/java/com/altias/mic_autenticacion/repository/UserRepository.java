@@ -2,7 +2,7 @@ package com.altias.mic_autenticacion.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.altias.mic_autenticacion.usuario.User;
+import com.altias.mic_autenticacion.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> { 
     User findByNombreUsuarioAndPassword(String nombreUsuario, String password);

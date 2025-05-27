@@ -1,4 +1,4 @@
-package com.altias.mic_autenticacion.usuario;
+package com.altias.mic_autenticacion.model;
 
 import java.time.LocalDate;
 
