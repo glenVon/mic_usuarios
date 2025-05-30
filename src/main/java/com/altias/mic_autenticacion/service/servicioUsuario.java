@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class servicioUsuario {
         this.userRepository = userRepository;
     }
     
-    public ResponseEntity<?> login(@RequestBody User user) {
+    public ResponseEntity<?> login(User user) {
         User authenticatedUser = userRepository.findByNombreUsuarioAndPassword(user.getNombreUsuario(), user.getPassword());
         if (authenticatedUser != null) {
             return ResponseEntity.ok(authenticatedUser);
@@ -33,7 +30,7 @@ public class servicioUsuario {
         }
     }
 
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(User user) {
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
         
@@ -44,7 +41,7 @@ public class servicioUsuario {
         return ResponseEntity.ok(users);
     }
 
-    public ResponseEntity<User> getUserById(@RequestParam Long id) {
+    public ResponseEntity<User> getUserById(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
             //retorna solo email y nombre
@@ -63,7 +60,7 @@ public class servicioUsuario {
         }
     }
 
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<String> deleteUser(Long id) {
     if (userRepository.existsById(id)) {
         userRepository.deleteById(id);  // Elimina directamente por ID
         return ResponseEntity.ok("Usuario con ID " + id + " eliminado");
@@ -73,28 +70,15 @@ public class servicioUsuario {
     }
 
     public ResponseEntity<?> authenticatedUser(User user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'authenticatedUser'");
+        // metodo autenticar usuario
+        User authenticatedUser = userRepository.findByNombreUsuarioAndPassword(user.getNombreUsuario(), user.getPassword());
+        if (authenticatedUser != null) {
+            return ResponseEntity.ok(authenticatedUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No autorizado");
+        }
     }
 
-
-    // public ResponseEntity<?> getDatosProtegidos(
-    //         @RequestParam String nombreUsuario,
-    //         @RequestParam String password) {
-        
-    //     // Verificación básica de credenciales
-    //     Map <String, String> response = new HashMap<>();
-    //     if ("admin".equals(nombreUsuario) && "1234".equals(password)) {
-    //         //return ResponseEntity.ok("Autorizado para entar a la MATRIX");
-            
-    //         response.put("mensaje", "Autorizado para entrar a la MATRIX");
-    //         response.put("usuario", "Admistrador");
-    //         return ResponseEntity.ok(response);
-    //     }
-    //     response.put("mensaje", "y tu quien eres?? vete");
-    //         response.put("usuario", "no autorizado");
-    //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-    // }
 
 
 
